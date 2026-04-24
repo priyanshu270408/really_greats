@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REALLY GREATS — Premium Sneakers</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --off-white: #f4f1eb;
+    --cream: #ede9df;
+    --gold: #c9a84c;
+    --gold-light: #e8c96e;
+    --gray: #888;
+    --red: #c0392b;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--off-white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 4rem;
+    mix-blend-mode: normal;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid rgba(255,255,255,0.08);
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2rem;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .nav-links li a {
+    color: rgba(244,241,235,0.55);
+    transition: color 0.2s;
+  }
+  .nav-links li a:hover { color: var(--gold); }
+
+  .nav-right {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(244,241,235,0.55);
+  }
+
+  .cart-btn {
+    background: var(--gold);
+    color: var(--black);
+    padding: 0.55rem 1.4rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .cart-btn:hover { background: var(--gold-light); }
+
+  /* HERO */
+  .hero {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 4rem 4rem 4rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(5rem, 8vw, 9rem);
+    line-height: 0.92;
+    letter-spacing: 0.04em;
+    color: var(--off-white);
+    opacity: 0;
+    animation: fadeUp 0.9s 0.4s forwards;
+  }
+
+  .hero-title span {
+    color: var(--gold);
+    display: block;
+  }
+
+  .hero-sub {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: rgba(244,241,235,0.5);
+    max-width: 380px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.6s forwards;
+  }
+
+  .hero-cta {
+    margin-top: 3rem;
+    display: flex;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.8s forwards;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--black);
+    padding: 1rem 2.5rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--off-white);
+    padding: 1rem 2.5rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 400;
+    cursor: pointer;
+    border: 0.5px solid rgba(244,241,235,0.3);
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+  .hero-image {
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeIn 1.2s 0.3s forwards;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.05);
+    transition: transform 8s ease;
+    filter: contrast(1.05);
+  }
+
+  .hero-image:hover img { transform: scale(1.0); }
+
+  .hero-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--black) 0%, transparent 30%);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 4rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(244,241,235,0.35);
+    opacity: 0;
+    animation: fadeUp 0.9s 1.2s forwards;
+  }
+
+  .scroll-line {
+    width: 40px;
+    height: 0.5px;
+    background: var(--gold);
+  }
+
+  /* MARQUEE */
+  .marquee-wrap {
+    background: var(--gold);
+    padding: 0.9rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .marquee-track {
+    display: inline-block;
+    animation: marquee 20s linear infinite;
+  }
+
+  .marquee-track span {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    color: var(--black);
+    padding: 0 2rem;
+  }
+
+  /* NEW SECTION: CATEGORIES */
+  .categories {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 70vh;
+    border-bottom: 0.5px solid rgba(255,255,255,0.08);
+  }
+
+  .category-box {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border-right: 0.5px solid rgba(255,255,255,0.08);
+  }
+
+  .category-box:last-child { border-right: none; }
+
+  .category-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 0.6;
+  }
+
+  .category-box:hover .category-img {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+
+  .category-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+  }
+
+  .category-content h2 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 4rem;
+    letter-spacing: 0.08em;
+    color: var(--off-white);
+    margin-bottom: 1rem;
+  }
+
+  /* PRODUCTS */
+  .products {
+    padding: 6rem 4rem;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+  }
+
+  .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    letter-spacing: 0.06em;
+    line-height: 1;
+  }
+
+  .view-all {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border-bottom: 0.5px solid var(--gold);
+    padding-bottom: 2px;
+    transition: opacity 0.2s;
+  }
+  .view-all:hover { opacity: 0.6; }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+  }
+
+  .product-card {
+    background: #0f0f0f;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    group: true;
+  }
+
+  .product-card:hover .product-img img {
+    transform: scale(1.06);
+  }
+
+  .product-img {
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #161616;
+  }
+
+  .product-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .product-info {
+    padding: 1.5rem;
+  }
+
+  .product-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .product-name {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+    color: var(--off-white);
+    margin-bottom: 0.3rem;
+  }
+
+  .product-colorway {
+    font-size: 0.78rem;
+    color: rgba(244,241,235,0.4);
+    margin-bottom: 1rem;
+  }
+
+  .product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .product-price {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--off-white);
+  }
+
+  .add-btn {
+    background: transparent;
+    border: 0.5px solid rgba(244,241,235,0.2);
+    color: rgba(244,241,235,0.5);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+
+  .add-btn:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--black);
+  }
+
+  .badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: var(--red);
+    color: #fff;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    font-weight: 500;
+    z-index: 2;
+  }
+
+  .badge-new {
+    background: var(--gold);
+    color: var(--black);
+  }
+
+  /* FEATURE STRIP */
+  .feature-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 0.5px solid rgba(255,255,255,0.08);
+    border-bottom: 0.5px solid rgba(255,255,255,0.08);
+  }
+
+  .feature-item {
+    padding: 3rem 4rem;
+    border-right: 0.5px solid rgba(255,255,255,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .feature-item:last-child { border-right: none; }
+
+  .feature-num {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 3rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .feature-text {
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: rgba(244,241,235,0.45);
+    line-height: 1.7;
+    max-width: 260px;
+  }
+
+  .feature-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--off-white);
+  }
+
+  /* BRAND STATEMENT */
+  .brand-stmt {
+    padding: 8rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .stmt-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(3rem, 5vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: 0.04em;
+  }
+
+  .stmt-title em {
+    font-style: normal;
+    color: var(--gold);
+    display: block;
+  }
+
+  .stmt-body {
+    font-size: 0.88rem;
+    line-height: 1.9;
+    color: rgba(244,241,235,0.5);
+  }
+
+  .stmt-body p + p { margin-top: 1.2rem; }
+
+  .divider-line {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    margin: 2rem 0;
+  }
+
+  /* NEW SECTION: JOURNAL / EDITORIAL */
+  .journal {
+    padding: 0 4rem 6rem 4rem;
+  }
+
+  .journal-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+  }
+
+  .article-card {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .article-img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .article-card:hover .article-img {
+    transform: scale(1.03);
+  }
+
+  .article-card:hover .article-title {
+    color: var(--gold);
+  }
+
+  .article-info {
+    padding: 1.5rem 0;
+  }
+
+  .article-meta {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+
+  .article-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2.2rem;
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+  }
+
+  .article-desc {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: rgba(244,241,235,0.5);
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 4rem;
+    border-top: 0.5px solid rgba(255,255,255,0.08);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .footer-brand .logo { font-size: 1.5rem; display: block; margin-bottom: 1rem; }
+
+  .footer-tagline {
+    font-size: 0.78rem;
+    color: rgba(244,241,235,0.35);
+    line-height: 1.7;
+  }
+
+  .footer-col h4 {
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(244,241,235,0.35);
+    margin-bottom: 1.2rem;
+  }
+
+  .footer-col ul { list-style: none; }
+
+  .footer-col ul li {
+    margin-bottom: 0.6rem;
+    font-size: 0.82rem;
+    color: rgba(244,241,235,0.55);
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .footer-col ul li:hover { color: var(--gold); }
+
+  .footer-bottom {
+    padding: 1.5rem 4rem;
+    border-top: 0.5px solid rgba(255,255,255,0.06);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: rgba(244,241,235,0.25);
+    letter-spacing: 0.08em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* HOVER LINE REVEAL */
+  .product-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: var(--gold);
+    transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .product-card:hover::after { width: 100%; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Really Greats</div>
+  <ul class="nav-links">
+    <li><a href="#">New Arrivals</a></li>
+    <li><a href="#">Men</a></li>
+    <li><a href="#">Women</a></li>
+    <li><a href="#">Collab</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+  <div class="nav-right">
+    <span>Search</span>
+    <button class="cart-btn">Cart (0)</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-eyebrow">New Drop — SS 2026</p>
+    <h1 class="hero-title">
+      Step Into<br>
+      <span>Greatness.</span>
+    </h1>
+    <p class="hero-sub">Curated icons. Uncompromising quality. Each pair tells a story — make yours unforgettable.</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="document.querySelector('.products').scrollIntoView({behavior:'smooth'})">Shop Now</button>
+      <button class="btn-ghost">Our Story</button>
+    </div>
+  </div>
+  <div class="hero-image">
+    <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=1200&q=80" alt="Premium Sneaker Hero" />
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll to explore
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Really Greats</span><span>·</span>
+    <span>Premium Sneakers</span><span>·</span>
+    <span>Adidas Samba</span><span>·</span>
+    <span>Nike Air Force</span><span>·</span>
+    <span>New York</span><span>·</span>
+    <span>London</span><span>·</span>
+    <span>Mumbai</span><span>·</span>
+    <span>Really Greats</span><span>·</span>
+    <span>Premium Sneakers</span><span>·</span>
+    <span>Adidas Samba</span><span>·</span>
+    <span>Nike Air Force</span><span>·</span>
+    <span>New York</span><span>·</span>
+    <span>London</span><span>·</span>
+    <span>Mumbai</span><span>·</span>
+  </div>
+</div>
+
+<section class="categories">
+  <div class="category-box">
+    <img class="category-img" src="https://images.unsplash.com/photo-1617317376997-8748e6862c01?auto=format&fit=crop&w=1000&q=80" alt="Shop Men">
+    <div class="category-content">
+      <h2>Shop Men</h2>
+      <button class="btn-ghost">Explore</button>
+    </div>
+  </div>
+  <div class="category-box">
+    <img class="category-img" src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=1000&q=80" alt="Shop Women">
+    <div class="category-content">
+      <h2>Shop Women</h2>
+      <button class="btn-ghost">Explore</button>
+    </div>
+  </div>
+</section>
+
+<section class="products">
+  <div class="section-header">
+    <div>
+      <p class="section-label">Featured Collection</p>
+      <h2 class="section-title">The Lineup</h2>
+    </div>
+    <a href="#" class="view-all">View All →</a>
+  </div>
+
+  <div class="product-grid">
+
+    <div class="product-card">
+      <div class="badge">Bestseller</div>
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&w=800&q=80" alt="Adidas Samba OG" />
+      </div>
+      <div class="product-info">
+        <p class="product-tag">Adidas Originals</p>
+        <p class="product-name">Samba OG</p>
+        <p class="product-colorway">Core Black / Cloud White</p>
+        <div class="product-footer">
+          <span class="product-price">₹9,499</span>
+          <button class="add-btn">Add +</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="badge badge-new">New</div>
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80" alt="Nike Air Force 1" />
+      </div>
+      <div class="product-info">
+        <p class="product-tag">Nike</p>
+        <p class="product-name">Air Force 1 '07</p>
+        <p class="product-colorway">Triple White / White</p>
+        <div class="product-footer">
+          <span class="product-price">₹8,295</span>
+          <button class="add-btn">Add +</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80" alt="Vans Old Skool" />
+      </div>
+      <div class="product-info">
+        <p class="product-tag">Vans</p>
+        <p class="product-name">Old Skool</p>
+        <p class="product-colorway">Black / White</p>
+        <div class="product-footer">
+          <span class="product-price">₹5,999</span>
+          <button class="add-btn">Add +</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="badge badge-new">Limited</div>
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=800&q=80" alt="Nike SB Dunk" />
+      </div>
+      <div class="product-info">
+        <p class="product-tag">Nike SB</p>
+        <p class="product-name">Dunk Low Pro</p>
+        <p class="product-colorway">Black / Gum</p>
+        <div class="product-footer">
+          <span class="product-price">₹11,499</span>
+          <button class="add-btn">Add +</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1597045566677-8cf032ed6634?auto=format&fit=crop&w=800&q=80" alt="Air Jordan 1 High" />
+      </div>
+      <div class="product-info">
+        <p class="product-tag">Jordan Brand</p>
+        <p class="product-name">Air Jordan 1 High</p>
+        <p class="product-colorway">Chicago Lost & Found</p>
+        <div class="product-footer">
+          <span class="product-price">₹16,995</span>
+          <button class="add-btn">Add +</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=800&q=80" alt="New Balance 550" />
+      </div>
+      <div class="product-info">
+        <p class="product-tag">New Balance</p>
+        <p class="product-name">550 Retro</p>
+        <p class="product-colorway">White / Green</p>
+        <div class="product-footer">
+          <span class="product-price">₹12,999</span>
+          <button class="add-btn">Add +</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="badge">Bestseller</div>
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=800&q=80" alt="Asics Gel Kayano" />
+      </div>
+      <div class="product-info">
+        <p class="product-tag">Asics</p>
+        <p class="product-name">Gel-Kayano 14</p>
+        <p class="product-colorway">Cream / Metallic Silver</p>
+        <div class="product-footer">
+          <span class="product-price">₹14,999</span>
+          <button class="add-btn">Add +</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1607522370275-f14206abe5d3?auto=format&fit=crop&w=800&q=80" alt="Converse Chuck 70" />
+      </div>
+      <div class="product-info">
+        <p class="product-tag">Converse</p>
+        <p class="product-name">Chuck 70 High</p>
+        <p class="product-colorway">Parchment</p>
+        <div class="product-footer">
+          <span class="product-price">₹5,499</span>
+          <button class="add-btn">Add +</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="feature-strip">
+  <div class="feature-item">
+    <div class="feature-num">100%</div>
+    <div class="feature-label">Authentic Guarantee</div>
+    <p class="feature-text">Every sneaker is authenticated by our expert team before it reaches your door. No fakes. Ever.</p>
+  </div>
+  <div class="feature-item">
+    <div class="feature-num">48H</div>
+    <div class="feature-label">Express Delivery</div>
+    <p class="feature-text">Order today, wear tomorrow. We ship across India in under 48 hours with tracked delivery.</p>
+  </div>
+  <div class="feature-item">
+    <div class="feature-num">30D</div>
+    <div class="feature-label">Easy Returns</div>
+    <p class="feature-text">Didn't fit? Changed your mind? Free returns within 30 days — no questions asked.</p>
+  </div>
+</div>
+
+<section class="brand-stmt">
+  <div>
+    <p class="section-label">Our Philosophy</p>
+    <h2 class="stmt-title">
+      Born from the
+      <em>streets.</em>
+      Built for the bold.
+    </h2>
+    <div class="divider-line"></div>
+    <button class="btn-primary">Discover the Brand</button>
+  </div>
+  <div class="stmt-body">
+    <p>Really Greats was founded on one belief: that the right pair of shoes changes everything. The way you walk into a room. The way you feel on a Monday morning. The way the world sees you.</p>
+    <p>We curate only the icons — sneakers that have earned their place in culture. The Samba that walked the streets of Berlin. The Air Force that defined New York nights. Each pair is more than footwear. It's a statement.</p>
+    <p>We are not a shop. We are an obsession, bottled and shipped to your door.</p>
+  </div>
+</section>
+
+<section class="journal">
+  <div class="section-header">
+    <div>
+      <p class="section-label">Editorial</p>
+      <h2 class="section-title">The Journal</h2>
+    </div>
+    <a href="#" class="view-all">Read More →</a>
+  </div>
+  
+  <div class="journal-grid">
+    <div class="article-card">
+      <img class="article-img" src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=1200&q=80" alt="Summer Lookbook">
+      <div class="article-info">
+        <p class="article-meta">Lookbook • March 2026</p>
+        <h3 class="article-title">The Concrete Canvas: SS26 Editorial</h3>
+        <p class="article-desc">Exploring how the new silhouettes from Asics and New Balance blend seamlessly into the modern brutalist architecture of the inner city.</p>
+      </div>
+    </div>
+    <div class="article-card">
+      <img class="article-img" src="https://images.unsplash.com/photo-1612821745127-53855be9cbd1?auto=format&fit=crop&w=800&q=80" alt="Sneaker Care">
+      <div class="article-info">
+        <p class="article-meta">Guide • February 2026</p>
+        <h3 class="article-title">How to keep your whites pristine</h3>
+        <p class="article-desc">An essential 5-step guide to maintaining your Air Force 1s and keeping that out-of-the-box glow going all season.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">
+    <span class="logo">Really Greats</span>
+    <p class="footer-tagline">Premium sneakers for the culturally conscious. Shipped across India.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Shop</h4>
+    <ul>
+      <li>New Arrivals</li>
+      <li>Men's Sneakers</li>
+      <li>Women's Sneakers</li>
+      <li>Collaborations</li>
+      <li>Sale</li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Help</h4>
+    <ul>
+      <li>Size Guide</li>
+      <li>Shipping Info</li>
+      <li>Returns</li>
+      <li>Authentication</li>
+      <li>Contact Us</li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Follow</h4>
+    <ul>
+      <li>Instagram</li>
+      <li>Twitter / X</li>
+      <li>YouTube</li>
+      <li>Newsletter</li>
+    </ul>
+  </div>
+</footer>
+
+<div class="footer-bottom">
+  <span>© 2026 Really Greats. All rights reserved.</span>
+  <span>Privacy · Terms · Cookies</span>
+</div>
+
+</body>
+</html>
