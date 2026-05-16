@@ -252,7 +252,7 @@
     padding: 0 2rem;
   }
 
-  /* NEW SECTION: CATEGORIES */
+  /* CATEGORIES */
   .categories {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -523,7 +523,7 @@
     margin: 2rem 0;
   }
 
-  /* NEW SECTION: JOURNAL / EDITORIAL */
+  /* JOURNAL / EDITORIAL */
   .journal {
     padding: 0 4rem 6rem 4rem;
   }
@@ -616,7 +616,9 @@
     transition: color 0.2s;
   }
 
-  .footer-col ul li:hover { color: var(--gold); }
+  /* Added to inherit the link hover colors smoothly */
+  .footer-col ul li a { transition: color 0.2s; }
+  .footer-col ul li:hover, .footer-col ul li a:hover { color: var(--gold); }
 
   .footer-bottom {
     padding: 1.5rem 4rem;
@@ -658,6 +660,7 @@
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
   <div class="logo">Really Greats</div>
   <ul class="nav-links">
@@ -673,6 +676,7 @@
   </div>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
   <div class="hero-text">
     <p class="hero-eyebrow">New Drop — SS 2026</p>
@@ -695,6 +699,7 @@
   </div>
 </section>
 
+<!-- MARQUEE -->
 <div class="marquee-wrap">
   <div class="marquee-track">
     <span>Really Greats</span><span>·</span>
@@ -714,6 +719,7 @@
   </div>
 </div>
 
+<!-- CATEGORIES -->
 <section class="categories">
   <div class="category-box">
     <img class="category-img" src="https://images.unsplash.com/photo-1617317376997-8748e6862c01?auto=format&fit=crop&w=1000&q=80" alt="Shop Men">
@@ -731,6 +737,7 @@
   </div>
 </section>
 
+<!-- PRODUCTS -->
 <section class="products">
   <div class="section-header">
     <div>
@@ -741,7 +748,7 @@
   </div>
 
   <div class="product-grid">
-
+    <!-- Card 1 -->
     <div class="product-card">
       <div class="badge">Bestseller</div>
       <div class="product-img">
@@ -758,6 +765,7 @@
       </div>
     </div>
 
+    <!-- Card 2 -->
     <div class="product-card">
       <div class="badge badge-new">New</div>
       <div class="product-img">
@@ -774,6 +782,7 @@
       </div>
     </div>
 
+    <!-- Card 3 -->
     <div class="product-card">
       <div class="product-img">
         <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80" alt="Vans Old Skool" />
@@ -789,6 +798,7 @@
       </div>
     </div>
 
+    <!-- Card 4 -->
     <div class="product-card">
       <div class="badge badge-new">Limited</div>
       <div class="product-img">
@@ -805,6 +815,7 @@
       </div>
     </div>
 
+    <!-- Card 5 -->
     <div class="product-card">
       <div class="product-img">
         <img src="https://images.unsplash.com/photo-1597045566677-8cf032ed6634?auto=format&fit=crop&w=800&q=80" alt="Air Jordan 1 High" />
@@ -820,6 +831,7 @@
       </div>
     </div>
 
+    <!-- Card 6 -->
     <div class="product-card">
       <div class="product-img">
         <img src="https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=800&q=80" alt="New Balance 550" />
@@ -835,6 +847,7 @@
       </div>
     </div>
 
+    <!-- Card 7 -->
     <div class="product-card">
       <div class="badge">Bestseller</div>
       <div class="product-img">
@@ -851,6 +864,7 @@
       </div>
     </div>
 
+    <!-- Card 8 -->
     <div class="product-card">
       <div class="product-img">
         <img src="https://images.unsplash.com/photo-1607522370275-f14206abe5d3?auto=format&fit=crop&w=800&q=80" alt="Converse Chuck 70" />
@@ -865,10 +879,10 @@
         </div>
       </div>
     </div>
-
   </div>
 </section>
 
+<!-- FEATURE STRIP -->
 <div class="feature-strip">
   <div class="feature-item">
     <div class="feature-num">100%</div>
@@ -887,6 +901,7 @@
   </div>
 </div>
 
+<!-- BRAND STATEMENT -->
 <section class="brand-stmt">
   <div>
     <p class="section-label">Our Philosophy</p>
@@ -905,6 +920,7 @@
   </div>
 </section>
 
+<!-- JOURNAL / EDITORIAL -->
 <section class="journal">
   <div class="section-header">
     <div>
@@ -934,6 +950,7 @@
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
   <div class="footer-brand">
     <span class="logo">Really Greats</span>
@@ -956,14 +973,14 @@
       <li>Shipping Info</li>
       <li>Returns</li>
       <li>Authentication</li>
-      <li>Contact Us</li>
+      <li><a href="mailto:indianuzigamer@gmail.com">Contact Us (Email)</a></li>
     </ul>
   </div>
   <div class="footer-col">
     <h4>Follow</h4>
     <ul>
-      <li>Instagram</li>
-      <li>Twitter / X</li>
+      <li><a href="https://www.instagram.com/reallygreats13?igsh=MTc3a2JkdXJrZWI0Nw==" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+      <li><a href="https://x.com/PriyanshuQ63647" target="_blank" rel="noopener noreferrer">Twitter / X</a></li>
       <li>YouTube</li>
       <li>Newsletter</li>
     </ul>
@@ -974,5 +991,7 @@
   <span>© 2026 Really Greats. All rights reserved.</span>
   <span>Privacy · Terms · Cookies</span>
 </div>
+
 </body>
 </html>
+
