@@ -26,7 +26,6 @@
     font-family: 'DM Sans', sans-serif;
     font-weight: 300;
     overflow-x: hidden;
-    cursor: crosshair;
   }
 
   a { text-decoration: none; color: inherit; }
@@ -51,6 +50,7 @@
     font-size: 2rem;
     letter-spacing: 0.12em;
     color: var(--gold);
+    cursor: pointer;
   }
 
   .nav-links {
@@ -77,6 +77,9 @@
     text-transform: uppercase;
     color: rgba(244,241,235,0.55);
   }
+
+  .search-btn { cursor: pointer; transition: color 0.2s; }
+  .search-btn:hover { color: var(--gold); }
 
   .cart-btn {
     background: var(--gold);
@@ -350,7 +353,6 @@
     position: relative;
     overflow: hidden;
     cursor: pointer;
-    group: true;
   }
 
   .product-card:hover .product-img img {
@@ -388,6 +390,9 @@
     letter-spacing: 0.08em;
     color: var(--off-white);
     margin-bottom: 0.3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .product-colorway {
@@ -419,11 +424,19 @@
     cursor: pointer;
     font-family: 'DM Sans', sans-serif;
     transition: all 0.2s;
+    position: relative;
+    z-index: 5;
   }
 
   .add-btn:hover {
     background: var(--gold);
     border-color: var(--gold);
+    color: var(--black);
+  }
+  
+  .add-btn.added {
+    background: var(--off-white);
+    border-color: var(--off-white);
     color: var(--black);
   }
 
@@ -590,7 +603,7 @@
     gap: 3rem;
   }
 
-  .footer-brand .logo { font-size: 1.5rem; display: block; margin-bottom: 1rem; }
+  .footer-brand .logo { font-size: 1.5rem; display: block; margin-bottom: 1rem; cursor: default; }
 
   .footer-tagline {
     font-size: 0.78rem;
@@ -616,7 +629,6 @@
     transition: color 0.2s;
   }
 
-  /* Added to inherit the link hover colors smoothly */
   .footer-col ul li a { transition: color 0.2s; }
   .footer-col ul li:hover, .footer-col ul li a:hover { color: var(--gold); }
 
@@ -628,6 +640,316 @@
     font-size: 0.72rem;
     color: rgba(244,241,235,0.25);
     letter-spacing: 0.08em;
+  }
+
+  /* CART DRAWER */
+  .cart-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  .cart-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .cart-drawer {
+    position: fixed;
+    top: 0;
+    right: -450px;
+    width: 450px;
+    max-width: 100vw;
+    height: 100vh;
+    background: #0f0f0f;
+    border-left: 1px solid rgba(255,255,255,0.08);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+  }
+
+  .cart-drawer.active {
+    right: 0;
+  }
+
+  .cart-header {
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .cart-header h3 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2rem;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+  }
+
+  .close-cart, .close-modal {
+    background: none;
+    border: none;
+    color: rgba(244,241,235,0.5);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .close-cart:hover, .close-modal:hover { color: var(--off-white); }
+
+  .cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .cart-empty-msg {
+    text-align: center;
+    color: rgba(244,241,235,0.3);
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .cart-item {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+  }
+
+  .cart-item-img {
+    width: 80px;
+    height: 80px;
+    background: #161616;
+  }
+
+  .cart-item-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cart-item-info {
+    flex: 1;
+  }
+
+  .cart-item-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.2rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.2rem;
+  }
+
+  .cart-item-price {
+    font-size: 0.85rem;
+    color: rgba(244,241,235,0.6);
+  }
+
+  .cart-item-remove {
+    background: none;
+    border: none;
+    color: var(--red);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 0.6rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .cart-footer {
+    padding: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    background: #0a0a0a;
+  }
+
+  .cart-total {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.8rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+  }
+
+  .checkout-btn {
+    width: 100%;
+    text-align: center;
+    padding: 1.2rem;
+    background: var(--off-white);
+    color: var(--black);
+    font-weight: 500;
+  }
+  .checkout-btn:hover { background: #fff; }
+  .checkout-btn:disabled { background: #333; color: #666; cursor: not-allowed; transform: none; }
+
+  /* PRODUCT QUICK VIEW MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 1005;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .modal-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal-container {
+    background: #0a0a0a;
+    border: 1px solid rgba(255,255,255,0.1);
+    width: 90%;
+    max-width: 1000px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    transform: translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .modal-overlay.active .modal-container {
+    transform: translateY(0);
+  }
+
+  .close-modal {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 10;
+  }
+
+  .modal-images {
+    padding: 2rem;
+    background: #111;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .modal-main-img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    background: #1a1a1a;
+  }
+
+  .modal-thumbnails {
+    display: flex;
+    gap: 1rem;
+  }
+  .modal-thumbnails img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .modal-thumbnails img:hover, .modal-thumbnails img.active {
+    border-color: var(--gold);
+  }
+
+  .modal-info {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 3.5rem;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    color: var(--off-white);
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-price {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--off-white);
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-desc {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: rgba(244,241,235,0.6);
+    margin-bottom: 2.5rem;
+  }
+
+  .modal-add-btn {
+    width: 100%;
+    padding: 1.2rem;
+    font-size: 0.85rem;
+    margin-bottom: 3rem;
+  }
+
+  .modal-reviews-section {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 2rem;
+  }
+
+  .modal-reviews-section h3 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.5rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 1.5rem;
+    color: var(--gold);
+  }
+
+  .review-item {
+    margin-bottom: 1.5rem;
+  }
+  
+  .review-stars {
+    color: var(--gold);
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .review-author {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--off-white);
+    margin-bottom: 0.3rem;
+  }
+
+  .review-text {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: rgba(244,241,235,0.5);
+  }
+
+  @media (max-width: 900px) {
+    .modal-container {
+      grid-template-columns: 1fr;
+    }
   }
 
   /* ANIMATIONS */
@@ -645,34 +967,23 @@
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
   }
-
-  /* HOVER LINE REVEAL */
-  .product-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 0; height: 2px;
-    background: var(--gold);
-    transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-  .product-card:hover::after { width: 100%; }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <div class="logo">Really Greats</div>
+  <div class="logo" onclick="window.scrollTo(0,0)">Really Greats</div>
   <ul class="nav-links">
-    <li><a href="#">New Arrivals</a></li>
-    <li><a href="#">Men</a></li>
-    <li><a href="#">Women</a></li>
-    <li><a href="#">Collab</a></li>
-    <li><a href="#">About</a></li>
+    <li><a href="#shop">New Arrivals</a></li>
+    <li><a href="#shop">Men</a></li>
+    <li><a href="#shop">Women</a></li>
+    <li><a href="#journal">Collab</a></li>
+    <li><a href="#about">About</a></li>
   </ul>
   <div class="nav-right">
-    <span>Search</span>
-    <button class="cart-btn">Cart (0)</button>
+    <span class="search-btn" onclick="alert('Search functionality coming soon!')">Search</span>
+    <button class="cart-btn" id="open-cart-btn">Cart (0)</button>
   </div>
 </nav>
 
@@ -687,7 +998,7 @@
     <p class="hero-sub">Curated icons. Uncompromising quality. Each pair tells a story — make yours unforgettable.</p>
     <div class="hero-cta">
       <button class="btn-primary" onclick="document.querySelector('.products').scrollIntoView({behavior:'smooth'})">Shop Now</button>
-      <button class="btn-ghost">Our Story</button>
+      <button class="btn-ghost" onclick="document.querySelector('.brand-stmt').scrollIntoView({behavior:'smooth'})">Our Story</button>
     </div>
   </div>
   <div class="hero-image">
@@ -704,31 +1015,29 @@
   <div class="marquee-track">
     <span>Really Greats</span><span>·</span>
     <span>Premium Sneakers</span><span>·</span>
-    <span>Adidas Samba</span><span>·</span>
-    <span>Nike Air Force</span><span>·</span>
-    <span>New York</span><span>·</span>
-    <span>London</span><span>·</span>
-    <span>Mumbai</span><span>·</span>
+    <span>RG Nexus-1</span><span>·</span>
+    <span>Aero Glide V2</span><span>·</span>
+    <span>Quantum Shift</span><span>·</span>
+    <span>Strider OG</span><span>·</span>
     <span>Really Greats</span><span>·</span>
     <span>Premium Sneakers</span><span>·</span>
-    <span>Adidas Samba</span><span>·</span>
-    <span>Nike Air Force</span><span>·</span>
-    <span>New York</span><span>·</span>
-    <span>London</span><span>·</span>
-    <span>Mumbai</span><span>·</span>
+    <span>RG Nexus-1</span><span>·</span>
+    <span>Aero Glide V2</span><span>·</span>
+    <span>Quantum Shift</span><span>·</span>
+    <span>Strider OG</span><span>·</span>
   </div>
 </div>
 
 <!-- CATEGORIES -->
-<section class="categories">
-  <div class="category-box">
+<section class="categories" id="shop">
+  <div class="category-box" onclick="document.querySelector('.products').scrollIntoView({behavior:'smooth'})">
     <img class="category-img" src="https://images.unsplash.com/photo-1617317376997-8748e6862c01?auto=format&fit=crop&w=1000&q=80" alt="Shop Men">
     <div class="category-content">
       <h2>Shop Men</h2>
       <button class="btn-ghost">Explore</button>
     </div>
   </div>
-  <div class="category-box">
+  <div class="category-box" onclick="document.querySelector('.products').scrollIntoView({behavior:'smooth'})">
     <img class="category-img" src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=1000&q=80" alt="Shop Women">
     <div class="category-content">
       <h2>Shop Women</h2>
@@ -749,132 +1058,132 @@
 
   <div class="product-grid">
     <!-- Card 1 -->
-    <div class="product-card">
+    <div class="product-card" data-index="0">
       <div class="badge">Bestseller</div>
       <div class="product-img">
-        <img src="https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&w=800&q=80" alt="Adidas Samba OG" />
+        <img src="https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&w=800&q=80" alt="RG Nexus-1" />
       </div>
       <div class="product-info">
-        <p class="product-tag">Adidas Originals</p>
-        <p class="product-name">Samba OG</p>
-        <p class="product-colorway">Core Black / Cloud White</p>
+        <p class="product-tag">RG Originals</p>
+        <p class="product-name">Nexus-1</p>
+        <p class="product-colorway">Phantom Black / Cloud</p>
         <div class="product-footer">
-          <span class="product-price">₹9,499</span>
+          <span class="product-price">₹3,499</span>
           <button class="add-btn">Add +</button>
         </div>
       </div>
     </div>
 
     <!-- Card 2 -->
-    <div class="product-card">
+    <div class="product-card" data-index="1">
       <div class="badge badge-new">New</div>
       <div class="product-img">
-        <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80" alt="Nike Air Force 1" />
+        <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80" alt="Aero Glide V2" />
       </div>
       <div class="product-info">
-        <p class="product-tag">Nike</p>
-        <p class="product-name">Air Force 1 '07</p>
-        <p class="product-colorway">Triple White / White</p>
+        <p class="product-tag">RG Athletics</p>
+        <p class="product-name">Aero Glide V2</p>
+        <p class="product-colorway">Titanium White</p>
         <div class="product-footer">
-          <span class="product-price">₹8,295</span>
+          <span class="product-price">₹3,899</span>
           <button class="add-btn">Add +</button>
         </div>
       </div>
     </div>
 
     <!-- Card 3 -->
-    <div class="product-card">
+    <div class="product-card" data-index="2">
       <div class="product-img">
-        <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80" alt="Vans Old Skool" />
+        <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80" alt="Strider OG" />
       </div>
       <div class="product-info">
-        <p class="product-tag">Vans</p>
-        <p class="product-name">Old Skool</p>
-        <p class="product-colorway">Black / White</p>
+        <p class="product-tag">RG Street</p>
+        <p class="product-name">Strider OG</p>
+        <p class="product-colorway">Vintage Parchment</p>
         <div class="product-footer">
-          <span class="product-price">₹5,999</span>
+          <span class="product-price">₹3,200</span>
           <button class="add-btn">Add +</button>
         </div>
       </div>
     </div>
 
     <!-- Card 4 -->
-    <div class="product-card">
+    <div class="product-card" data-index="3">
       <div class="badge badge-new">Limited</div>
       <div class="product-img">
-        <img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=800&q=80" alt="Nike SB Dunk" />
+        <img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=800&q=80" alt="Strider Pro Skate" />
       </div>
       <div class="product-info">
-        <p class="product-tag">Nike SB</p>
-        <p class="product-name">Dunk Low Pro</p>
-        <p class="product-colorway">Black / Gum</p>
+        <p class="product-tag">RG Skate</p>
+        <p class="product-name">Strider Pro</p>
+        <p class="product-colorway">Obsidian / Gum</p>
         <div class="product-footer">
-          <span class="product-price">₹11,499</span>
+          <span class="product-price">₹4,299</span>
           <button class="add-btn">Add +</button>
         </div>
       </div>
     </div>
 
     <!-- Card 5 -->
-    <div class="product-card">
+    <div class="product-card" data-index="4">
       <div class="product-img">
-        <img src="https://images.unsplash.com/photo-1597045566677-8cf032ed6634?auto=format&fit=crop&w=800&q=80" alt="Air Jordan 1 High" />
+        <img src="https://images.unsplash.com/photo-1597045566677-8cf032ed6634?auto=format&fit=crop&w=800&q=80" alt="Velocity High" />
       </div>
       <div class="product-info">
-        <p class="product-tag">Jordan Brand</p>
-        <p class="product-name">Air Jordan 1 High</p>
-        <p class="product-colorway">Chicago Lost & Found</p>
+        <p class="product-tag">RG Heritage</p>
+        <p class="product-name">Velocity High</p>
+        <p class="product-colorway">Crimson / Slate</p>
         <div class="product-footer">
-          <span class="product-price">₹16,995</span>
+          <span class="product-price">₹4,899</span>
           <button class="add-btn">Add +</button>
         </div>
       </div>
     </div>
 
     <!-- Card 6 -->
-    <div class="product-card">
+    <div class="product-card" data-index="5">
       <div class="product-img">
-        <img src="https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=800&q=80" alt="New Balance 550" />
+        <img src="https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=800&q=80" alt="Quantum Shift" />
       </div>
       <div class="product-info">
-        <p class="product-tag">New Balance</p>
-        <p class="product-name">550 Retro</p>
-        <p class="product-colorway">White / Green</p>
+        <p class="product-tag">RG Innovation</p>
+        <p class="product-name">Quantum Shift</p>
+        <p class="product-colorway">Neon Volt / Chalk</p>
         <div class="product-footer">
-          <span class="product-price">₹12,999</span>
+          <span class="product-price">₹4,500</span>
           <button class="add-btn">Add +</button>
         </div>
       </div>
     </div>
 
     <!-- Card 7 -->
-    <div class="product-card">
+    <div class="product-card" data-index="6">
       <div class="badge">Bestseller</div>
       <div class="product-img">
-        <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=800&q=80" alt="Asics Gel Kayano" />
+        <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=800&q=80" alt="Echo Trail" />
       </div>
       <div class="product-info">
-        <p class="product-tag">Asics</p>
-        <p class="product-name">Gel-Kayano 14</p>
-        <p class="product-colorway">Cream / Metallic Silver</p>
+        <p class="product-tag">RG Outdoor</p>
+        <p class="product-name">Echo Trail</p>
+        <p class="product-colorway">Earth / Moss</p>
         <div class="product-footer">
-          <span class="product-price">₹14,999</span>
+          <span class="product-price">₹4,650</span>
           <button class="add-btn">Add +</button>
         </div>
       </div>
     </div>
 
     <!-- Card 8 -->
-    <div class="product-card">
+    <div class="product-card" data-index="7">
       <div class="product-img">
-        <img src="https://images.unsplash.com/photo-1607522370275-f14206abe5d3?auto=format&fit=crop&w=800&q=80" alt="Converse Chuck 70" />
+        <img src="https://images.unsplash.com/photo-1607522370275-f14206abe5d3?auto=format&fit=crop&w=800&q=80" alt="Canvas 70 High" />
       </div>
       <div class="product-info">
-        <p class="product-tag">Converse</p>
-        <p class="product-name">Chuck 70 High</p>
-        <p class="product-colorway">Parchment</p>
+        <p class="product-tag">RG Classics</p>
+        <p class="product-name">Canvas 70 High</p>
+        <p class="product-colorway">Off-White / Indigo</p>
         <div class="product-footer">
-          <span class="product-price">₹5,499</span>
+          <span class="product-price">₹3,000</span>
           <button class="add-btn">Add +</button>
         </div>
       </div>
@@ -902,7 +1211,7 @@
 </div>
 
 <!-- BRAND STATEMENT -->
-<section class="brand-stmt">
+<section class="brand-stmt" id="about">
   <div>
     <p class="section-label">Our Philosophy</p>
     <h2 class="stmt-title">
@@ -911,7 +1220,7 @@
       Built for the bold.
     </h2>
     <div class="divider-line"></div>
-    <button class="btn-primary">Discover the Brand</button>
+    <button class="btn-primary" onclick="document.querySelector('.journal').scrollIntoView({behavior:'smooth'})">Discover the Brand</button>
   </div>
   <div class="stmt-body">
     <p>Really Greats was founded on one belief: that the right pair of shoes changes everything. The way you walk into a room. The way you feel on a Monday morning. The way the world sees you.</p>
@@ -921,7 +1230,7 @@
 </section>
 
 <!-- JOURNAL / EDITORIAL -->
-<section class="journal">
+<section class="journal" id="journal">
   <div class="section-header">
     <div>
       <p class="section-label">Editorial</p>
@@ -936,7 +1245,7 @@
       <div class="article-info">
         <p class="article-meta">Lookbook • March 2026</p>
         <h3 class="article-title">The Concrete Canvas: SS26 Editorial</h3>
-        <p class="article-desc">Exploring how the new silhouettes from Asics and New Balance blend seamlessly into the modern brutalist architecture of the inner city.</p>
+        <p class="article-desc">Exploring how the new silhouettes from our Echo Trail and Quantum Shift lines blend seamlessly into the modern brutalist architecture of the inner city.</p>
       </div>
     </div>
     <div class="article-card">
@@ -944,7 +1253,7 @@
       <div class="article-info">
         <p class="article-meta">Guide • February 2026</p>
         <h3 class="article-title">How to keep your whites pristine</h3>
-        <p class="article-desc">An essential 5-step guide to maintaining your Air Force 1s and keeping that out-of-the-box glow going all season.</p>
+        <p class="article-desc">An essential 5-step guide to maintaining your Aero Glides and keeping that out-of-the-box glow going all season.</p>
       </div>
     </div>
   </div>
@@ -959,9 +1268,9 @@
   <div class="footer-col">
     <h4>Shop</h4>
     <ul>
-      <li>New Arrivals</li>
-      <li>Men's Sneakers</li>
-      <li>Women's Sneakers</li>
+      <li><a href="#shop">New Arrivals</a></li>
+      <li><a href="#shop">Men's Sneakers</a></li>
+      <li><a href="#shop">Women's Sneakers</a></li>
       <li>Collaborations</li>
       <li>Sale</li>
     </ul>
@@ -981,16 +1290,410 @@
     <ul>
       <li><a href="https://www.instagram.com/reallygreats13?igsh=MTc3a2JkdXJrZWI0Nw==" target="_blank" rel="noopener noreferrer">Instagram</a></li>
       <li><a href="https://x.com/PriyanshuQ63647" target="_blank" rel="noopener noreferrer">Twitter / X</a></li>
-      <li><a href="https://youtube.com/@reallygreats?si=yMlGisfwGWVvzZg1" target="_blank" rel="noopener noreferrer">YouTube</li>
+      <li>YouTube</li>
+      <li>Newsletter</li>
     </ul>
   </div>
 </footer>
 
 <div class="footer-bottom">
-  <span>© 2026 Really Greats. All rights reserved.</span>
+  <span>© <span id="current-year">2026</span> Really Greats. All rights reserved.</span>
   <span>Privacy · Terms · Cookies</span>
 </div>
 
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cart-overlay"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button class="close-cart" id="close-cart-btn">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items-container">
+    <p class="cart-empty-msg">Your cart is currently empty.</p>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span>Total:</span>
+      <span id="cart-total-price">₹0</span>
+    </div>
+    <button class="btn-primary checkout-btn" id="checkout-btn" disabled>Checkout Securely</button>
+  </div>
+</div>
+
+<!-- PRODUCT QUICK VIEW MODAL -->
+<div class="modal-overlay" id="product-modal-overlay">
+  <div class="modal-container">
+    <button class="close-modal" id="close-modal-btn">✕</button>
+    
+    <div class="modal-images">
+      <img id="modal-main-img" class="modal-main-img" src="" alt="Sneaker">
+      <div class="modal-thumbnails" id="modal-thumbnails">
+        <!-- Thumbnails injected via JS -->
+      </div>
+    </div>
+    
+    <div class="modal-info">
+      <p class="modal-tag" id="modal-tag"></p>
+      <h2 class="modal-title" id="modal-title"></h2>
+      <p class="modal-price" id="modal-price"></p>
+      <p class="modal-desc" id="modal-desc"></p>
+      
+      <button class="btn-primary modal-add-btn" id="modal-add-btn">Add to Cart</button>
+
+      <div class="modal-reviews-section">
+        <h3>Customer Reviews</h3>
+        <div id="modal-reviews-list">
+          <!-- Reviews injected via JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JAVASCRIPT FOR FUNCTIONALITY -->
+<script>
+  // State
+  let cart = [];
+  let currentModalProductIndex = null;
+
+  // PRODUCT DATABASE (ORIGINAL FICTIONAL BRANDS & VARIED PRICES)
+  const productsDB = [
+    {
+      tag: "RG Originals",
+      name: "Nexus-1",
+      price: 3499,
+      priceText: "₹3,499",
+      desc: "Designed for the urban grid. The Nexus-1 is a sleek, low-profile silhouette featuring a matte synthetic leather upper, suede overlays, and an adaptive traction sole for all-day city maneuvering.",
+      images: [
+        "https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80"
+      ],
+      reviews: [
+        { user: "Rahul T.", rating: 5, text: "Classic silhouette. Fits true to size and goes with literally any outfit." },
+        { user: "SneakerHead99", rating: 4, text: "Great quality materials, just a bit narrow if you have wide feet. Break them in for a few days." }
+      ]
+    },
+    {
+      tag: "RG Athletics",
+      name: "Aero Glide V2",
+      price: 3899,
+      priceText: "₹3,899",
+      desc: "Ultra-lightweight and engineered for momentum. The Aero Glide V2 features a breathable engineered mesh upper and our proprietary zero-gravity foam midsole for maximum energy return.",
+      images: [
+        "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?auto=format&fit=crop&w=800&q=80"
+      ],
+      reviews: [
+        { user: "Aman D.", rating: 5, text: "Can never go wrong with a crisp white pair. A must-have staple for summer." },
+        { user: "Priya S.", rating: 5, text: "Super comfortable and they look so clean. Arrived next day!" }
+      ]
+    },
+    {
+      tag: "RG Street",
+      name: "Strider OG",
+      price: 3200,
+      priceText: "₹3,200",
+      desc: "A nod to 80s court shoes, modernized for today. Built with premium distressed leather and a pre-yellowed midsole for that instant vintage feel straight out of the box.",
+      images: [
+        "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&w=800&q=80"
+      ],
+      reviews: [
+        { user: "Kabir M.", rating: 4, text: "Perfect daily beaters. They look better the more you wear them." }
+      ]
+    },
+    {
+      tag: "RG Skate",
+      name: "Strider Pro",
+      price: 4299,
+      priceText: "₹4,299",
+      desc: "Built tough. The Strider Pro takes our classic silhouette and reinforces it with a double-layered toe box, padded tongue, and a grippy gum outsole designed specifically to handle grip tape.",
+      images: [
+        "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80"
+      ],
+      reviews: [
+        { user: "Arjun R.", rating: 5, text: "Incredible pair. The gum sole really sets off the dark suede." },
+        { user: "Vicky112", rating: 4, text: "Durable as hell. Survived a month of heavy skating and still looks fresh." }
+      ]
+    },
+    {
+      tag: "RG Heritage",
+      name: "Velocity High",
+      price: 4899,
+      priceText: "₹4,899",
+      desc: "A bold streetwear staple. The Velocity High features a towering silhouette built with premium tumbled leather overlays and a reinforced ankle collar for maximum support and style.",
+      images: [
+        "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=800&q=80"
+      ],
+      reviews: [
+        { user: "SneakerKing", rating: 5, text: "The leather quality on these is insane for the price. Definitely turning heads." }
+      ]
+    },
+    {
+      tag: "RG Innovation",
+      name: "Quantum Shift",
+      price: 4500,
+      priceText: "₹4,500",
+      desc: "Pushing the boundaries of sneaker tech. The Quantum Shift features dynamic energy-return pods, a translucent outsole, and a futuristic upper that adapts to your foot shape.",
+      images: [
+        "https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=800&q=80"
+      ],
+      reviews: [
+        { user: "Neha K.", rating: 5, text: "So aesthetic! Love the techy, futuristic vibe." },
+        { user: "Rohan J.", rating: 4, text: "Chunky but surprisingly light. Really comfortable for all-day wear." }
+      ]
+    },
+    {
+      tag: "RG Outdoor",
+      name: "Echo Trail",
+      price: 4650,
+      priceText: "₹4,650",
+      desc: "Rugged yet refined. Built for the outdoors but styled for the streets, featuring a water-resistant ripstop upper, heavy-duty tread, and a quick-toggle lacing system.",
+      images: [
+        "https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=800&q=80"
+      ],
+      reviews: [
+        { user: "Sid V.", rating: 5, text: "Most comfortable shoe in my collection. Perfect for the monsoon season." }
+      ]
+    },
+    {
+      tag: "RG Classics",
+      name: "Canvas 70 High",
+      price: 3000,
+      priceText: "₹3,000",
+      desc: "An homage to the golden era of basketball. Stripped back to the essentials with heavy-weight canvas, a thicker rubber midsole, and enhanced arch support.",
+      images: [
+        "https://images.unsplash.com/photo-1607522370275-f14206abe5d3?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80"
+      ],
+      reviews: [
+        { user: "Tara M.", rating: 5, text: "Way better than standard canvas shoes. The extra cushioning is very noticeable." }
+      ]
+    }
+  ];
+
+  // DOM Elements
+  const cartBtn = document.getElementById('open-cart-btn');
+  const closeCartBtn = document.getElementById('close-cart-btn');
+  const cartDrawer = document.getElementById('cart-drawer');
+  const cartOverlay = document.getElementById('cart-overlay');
+  const cartItemsContainer = document.getElementById('cart-items-container');
+  const cartTotalPrice = document.getElementById('cart-total-price');
+  const checkoutBtn = document.getElementById('checkout-btn');
+  const currentYearSpan = document.getElementById('current-year');
+  const productCards = document.querySelectorAll('.product-card');
+  
+  // Modal DOM
+  const modalOverlay = document.getElementById('product-modal-overlay');
+  const closeModalBtn = document.getElementById('close-modal-btn');
+  const modalMainImg = document.getElementById('modal-main-img');
+  const modalThumbnails = document.getElementById('modal-thumbnails');
+  const modalTag = document.getElementById('modal-tag');
+  const modalTitle = document.getElementById('modal-title');
+  const modalPrice = document.getElementById('modal-price');
+  const modalDesc = document.getElementById('modal-desc');
+  const modalReviewsList = document.getElementById('modal-reviews-list');
+  const modalAddBtn = document.getElementById('modal-add-btn');
+
+  // Set Current Year
+  currentYearSpan.textContent = new Date().getFullYear();
+
+  // --- CART LOGIC ---
+  function openCart() {
+    cartDrawer.classList.add('active');
+    cartOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCart() {
+    cartDrawer.classList.remove('active');
+    cartOverlay.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+
+  cartBtn.addEventListener('click', openCart);
+  closeCartBtn.addEventListener('click', closeCart);
+  cartOverlay.addEventListener('click', closeCart);
+
+  function formatCurrency(num) {
+    return '₹' + num.toLocaleString('en-IN');
+  }
+
+  function updateCartUI() {
+    cartBtn.innerText = `Cart (${cart.length})`;
+    cartItemsContainer.innerHTML = '';
+    let total = 0;
+
+    if (cart.length === 0) {
+      cartItemsContainer.innerHTML = '<p class="cart-empty-msg">Your cart is currently empty.</p>';
+      checkoutBtn.disabled = true;
+    } else {
+      checkoutBtn.disabled = false;
+      cart.forEach((item, index) => {
+        total += item.price;
+        const itemHTML = `
+          <div class="cart-item">
+            <div class="cart-item-img">
+              <img src="${item.img}" alt="${item.name}">
+            </div>
+            <div class="cart-item-info">
+              <h4 class="cart-item-title">${item.name}</h4>
+              <p class="cart-item-price">${item.priceText}</p>
+              <button class="cart-item-remove" onclick="removeFromCart(${index})">Remove</button>
+            </div>
+          </div>
+        `;
+        cartItemsContainer.insertAdjacentHTML('beforeend', itemHTML);
+      });
+    }
+    cartTotalPrice.innerText = formatCurrency(total);
+  }
+
+  window.removeFromCart = function(indexToRemove) {
+    cart.splice(indexToRemove, 1);
+    updateCartUI();
+  }
+
+  checkoutBtn.addEventListener('click', () => {
+    if(cart.length > 0) {
+      alert(`Proceeding to checkout. Total: ${cartTotalPrice.innerText}\n\n(This is a demo frontend)`);
+      cart = [];
+      updateCartUI();
+      closeCart();
+    }
+  });
+
+  // Function to Add Item to Cart Array
+  function addItemToCart(index) {
+    const product = productsDB[index];
+    const id = 'prod_' + index + '_' + Date.now();
+    cart.push({ 
+      id: id, 
+      name: product.name, 
+      price: product.price, 
+      priceText: product.priceText, 
+      img: product.images[0] 
+    });
+    updateCartUI();
+    openCart();
+  }
+
+  // --- MODAL LOGIC ---
+  function openModal(index) {
+    const product = productsDB[index];
+    currentModalProductIndex = index;
+    
+    // Populate text
+    modalTag.innerText = product.tag;
+    modalTitle.innerText = product.name;
+    modalPrice.innerText = product.priceText;
+    modalDesc.innerText = product.desc;
+    
+    // Populate images
+    modalMainImg.src = product.images[0];
+    modalThumbnails.innerHTML = '';
+    product.images.forEach((imgSrc, i) => {
+      const img = document.createElement('img');
+      img.src = imgSrc;
+      if (i === 0) img.classList.add('active');
+      
+      // Change main image on thumbnail click
+      img.addEventListener('click', () => {
+        modalMainImg.src = imgSrc;
+        document.querySelectorAll('.modal-thumbnails img').forEach(t => t.classList.remove('active'));
+        img.classList.add('active');
+      });
+      modalThumbnails.appendChild(img);
+    });
+
+    // Populate reviews
+    modalReviewsList.innerHTML = '';
+    if (product.reviews.length > 0) {
+      product.reviews.forEach(review => {
+        const starsHTML = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+        const reviewHTML = `
+          <div class="review-item">
+            <div class="review-stars">${starsHTML}</div>
+            <p class="review-author">${review.user}</p>
+            <p class="review-text">"${review.text}"</p>
+          </div>
+        `;
+        modalReviewsList.insertAdjacentHTML('beforeend', reviewHTML);
+      });
+    } else {
+      modalReviewsList.innerHTML = '<p class="review-text">No reviews yet.</p>';
+    }
+
+    // Reset button text just in case
+    modalAddBtn.innerText = 'Add to Cart';
+    modalAddBtn.classList.remove('added');
+
+    // Show modal
+    modalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modalOverlay.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+
+  closeModalBtn.addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) closeModal();
+  });
+
+  // Modal "Add to Cart" button
+  modalAddBtn.addEventListener('click', () => {
+    if (currentModalProductIndex !== null) {
+      addItemToCart(currentModalProductIndex);
+      
+      // Visual feedback
+      modalAddBtn.innerText = '✓ Added';
+      modalAddBtn.classList.add('added');
+      setTimeout(() => {
+        modalAddBtn.innerText = 'Add to Cart';
+        modalAddBtn.classList.remove('added');
+        closeModal();
+      }, 800);
+    }
+  });
+
+  // --- ATTACH EVENTS TO PRODUCT CARDS ---
+  productCards.forEach(card => {
+    // When clicking the card itself (opens modal)
+    card.addEventListener('click', (e) => {
+      // If the clicked element is NOT the Add button, open the modal
+      if (!e.target.classList.contains('add-btn')) {
+        const index = parseInt(card.getAttribute('data-index'));
+        openModal(index);
+      }
+    });
+
+    // When clicking the "Add +" button inside the card grid
+    const addBtn = card.querySelector('.add-btn');
+    addBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // Prevents the card click event from firing (prevents modal from opening)
+      
+      const index = parseInt(card.getAttribute('data-index'));
+      addItemToCart(index);
+      
+      // Button visual feedback
+      const originalText = addBtn.innerText;
+      addBtn.innerText = '✓ Added';
+      addBtn.classList.add('added');
+      setTimeout(() => {
+        addBtn.innerText = originalText;
+        addBtn.classList.remove('added');
+      }, 1500);
+    });
+  });
+
+</script>
 </body>
 </html>
-
