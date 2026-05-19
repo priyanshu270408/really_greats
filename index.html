@@ -51,6 +51,7 @@
     letter-spacing: 0.12em;
     color: var(--gold);
     cursor: pointer;
+    z-index: 102;
   }
 
   .nav-links {
@@ -76,6 +77,7 @@
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: rgba(244,241,235,0.55);
+    z-index: 102;
   }
 
   .search-btn { cursor: pointer; transition: color 0.2s; }
@@ -95,6 +97,16 @@
     font-family: 'DM Sans', sans-serif;
   }
   .cart-btn:hover { background: var(--gold-light); }
+
+  /* Mobile Hamburger Icon */
+  .hamburger {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--off-white);
+    background: none;
+    border: none;
+  }
 
   /* HERO */
   .hero {
@@ -126,7 +138,7 @@
 
   .hero-title {
     font-family: 'Bebas Neue', cursive;
-    font-size: clamp(5rem, 8vw, 9rem);
+    font-size: clamp(4rem, 8vw, 9rem);
     line-height: 0.92;
     letter-spacing: 0.04em;
     color: var(--off-white);
@@ -155,6 +167,7 @@
     gap: 1rem;
     opacity: 0;
     animation: fadeUp 0.9s 0.8s forwards;
+    flex-wrap: wrap;
   }
 
   .btn-primary {
@@ -297,7 +310,7 @@
 
   .category-content h2 {
     font-family: 'Bebas Neue', cursive;
-    font-size: 4rem;
+    font-size: clamp(2.5rem, 5vw, 4rem);
     letter-spacing: 0.08em;
     color: var(--off-white);
     margin-bottom: 1rem;
@@ -313,6 +326,8 @@
     justify-content: space-between;
     align-items: flex-end;
     margin-bottom: 4rem;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
 
   .section-label {
@@ -405,6 +420,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .product-price {
@@ -730,6 +747,7 @@
     width: 80px;
     height: 80px;
     background: #161616;
+    flex-shrink: 0;
   }
 
   .cart-item-img img {
@@ -946,10 +964,117 @@
     color: rgba(244,241,235,0.5);
   }
 
-  @media (max-width: 900px) {
-    .modal-container {
-      grid-template-columns: 1fr;
+  /* =========================================
+     RESPONSIVE MEDIA QUERIES
+     ========================================= */
+
+  /* TABLET SCREENS */
+  @media (max-width: 1024px) {
+    .product-grid { grid-template-columns: repeat(3, 1fr); }
+    .hero-text { padding: 6rem 2rem 2rem 2rem; }
+    .hero-scroll { display: none; }
+  }
+
+  /* MOBILE SCREENS */
+  @media (max-width: 768px) {
+    /* Nav */
+    nav { padding: 1rem 1.5rem; }
+    .logo { font-size: 1.6rem; }
+    .nav-links {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(12px);
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 0;
+      gap: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: none;
     }
+    .nav-links.active { display: flex; }
+    .hamburger { display: block; }
+    .search-btn { display: none; }
+
+    /* Hero */
+    .hero {
+      grid-template-columns: 1fr;
+      height: auto;
+      min-height: 100vh;
+      padding-top: 5rem;
+    }
+    .hero-text {
+      order: 1;
+      padding: 4rem 1.5rem 2rem 1.5rem;
+      text-align: center;
+      align-items: center;
+    }
+    .hero-image {
+      order: 2;
+      height: 50vh;
+      width: 100%;
+    }
+    .hero-image::after {
+      background: linear-gradient(0deg, var(--black) 0%, transparent 30%);
+    }
+
+    /* Sections */
+    .products, .brand-stmt, .journal { padding: 4rem 1.5rem; }
+    .categories { grid-template-columns: 1fr; height: auto; }
+    .category-box { height: 40vh; }
+    
+    /* Product Grid */
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .product-info { padding: 1rem; }
+    .product-name { font-size: 1.2rem; }
+    .product-price { font-size: 0.9rem; }
+    .add-btn { padding: 0.4rem 0.8rem; font-size: 0.6rem; }
+
+    /* Features */
+    .feature-strip { grid-template-columns: 1fr; }
+    .feature-item { 
+      padding: 2.5rem 1.5rem; 
+      border-right: none; 
+      border-bottom: 0.5px solid rgba(255,255,255,0.08); 
+      align-items: center; 
+      text-align: center;
+    }
+    .feature-item:last-child { border-bottom: none; }
+
+    /* Brand Statement */
+    .brand-stmt { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
+    .divider-line { margin: 2rem auto; }
+
+    /* Journal */
+    .journal-grid { grid-template-columns: 1fr; }
+    .article-img { height: 300px; }
+
+    /* Modal */
+    .modal-container { grid-template-columns: 1fr; }
+    .modal-info { padding: 1.5rem; }
+    .modal-title { font-size: 2.5rem; }
+    .modal-images { padding: 1rem; }
+    .modal-thumbnails img { width: 60px; height: 60px; }
+
+    /* Footer */
+    footer { grid-template-columns: 1fr 1fr; padding: 3rem 1.5rem; gap: 2rem; }
+    .footer-brand { grid-column: span 2; }
+    .footer-bottom { 
+      flex-direction: column; 
+      padding: 1.5rem; 
+      text-align: center; 
+      gap: 1rem; 
+    }
+  }
+
+  /* SMALL MOBILE SCREENS */
+  @media (max-width: 480px) {
+    .product-grid { grid-template-columns: 1fr; }
+    footer { grid-template-columns: 1fr; }
+    .footer-brand { grid-column: span 1; }
+    .hero-title { font-size: 3.5rem; }
   }
 
   /* ANIMATIONS */
@@ -974,16 +1099,17 @@
 <!-- NAV -->
 <nav>
   <div class="logo" onclick="window.scrollTo(0,0)">Really Greats</div>
-  <ul class="nav-links">
-    <li><a href="#shop">New Arrivals</a></li>
-    <li><a href="#shop">Men</a></li>
-    <li><a href="#shop">Women</a></li>
-    <li><a href="#journal">Collab</a></li>
-    <li><a href="#about">About</a></li>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#shop" class="nav-close-trigger">New Arrivals</a></li>
+    <li><a href="#shop" class="nav-close-trigger">Men</a></li>
+    <li><a href="#shop" class="nav-close-trigger">Women</a></li>
+    <li><a href="#journal" class="nav-close-trigger">Collab</a></li>
+    <li><a href="#about" class="nav-close-trigger">About</a></li>
   </ul>
   <div class="nav-right">
     <span class="search-btn" onclick="alert('Search functionality coming soon!')">Search</span>
     <button class="cart-btn" id="open-cart-btn">Cart (0)</button>
+    <button class="hamburger" id="hamburger-btn">☰</button>
   </div>
 </nav>
 
@@ -1478,6 +1604,10 @@
   ];
 
   // DOM Elements
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const navLinks = document.getElementById('nav-links');
+  const navCloseTriggers = document.querySelectorAll('.nav-close-trigger');
+  
   const cartBtn = document.getElementById('open-cart-btn');
   const closeCartBtn = document.getElementById('close-cart-btn');
   const cartDrawer = document.getElementById('cart-drawer');
@@ -1502,6 +1632,23 @@
 
   // Set Current Year
   currentYearSpan.textContent = new Date().getFullYear();
+
+  // --- MOBILE NAV LOGIC ---
+  hamburgerBtn.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    if (navLinks.classList.contains('active')) {
+      hamburgerBtn.innerText = '✕';
+    } else {
+      hamburgerBtn.innerText = '☰';
+    }
+  });
+
+  navCloseTriggers.forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      navLinks.classList.remove('active');
+      hamburgerBtn.innerText = '☰';
+    });
+  });
 
   // --- CART LOGIC ---
   function openCart() {
@@ -1568,7 +1715,6 @@
     }
   });
 
-  // Function to Add Item to Cart Array
   function addItemToCart(index) {
     const product = productsDB[index];
     const id = 'prod_' + index + '_' + Date.now();
@@ -1602,7 +1748,6 @@
       img.src = imgSrc;
       if (i === 0) img.classList.add('active');
       
-      // Change main image on thumbnail click
       img.addEventListener('click', () => {
         modalMainImg.src = imgSrc;
         document.querySelectorAll('.modal-thumbnails img').forEach(t => t.classList.remove('active'));
@@ -1629,11 +1774,9 @@
       modalReviewsList.innerHTML = '<p class="review-text">No reviews yet.</p>';
     }
 
-    // Reset button text just in case
     modalAddBtn.innerText = 'Add to Cart';
     modalAddBtn.classList.remove('added');
 
-    // Show modal
     modalOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
@@ -1648,12 +1791,10 @@
     if (e.target === modalOverlay) closeModal();
   });
 
-  // Modal "Add to Cart" button
   modalAddBtn.addEventListener('click', () => {
     if (currentModalProductIndex !== null) {
       addItemToCart(currentModalProductIndex);
       
-      // Visual feedback
       modalAddBtn.innerText = '✓ Added';
       modalAddBtn.classList.add('added');
       setTimeout(() => {
@@ -1661,29 +1802,24 @@
         modalAddBtn.classList.remove('added');
         closeModal();
       }, 800);
-    }
+    } 
   });
 
   // --- ATTACH EVENTS TO PRODUCT CARDS ---
   productCards.forEach(card => {
-    // When clicking the card itself (opens modal)
     card.addEventListener('click', (e) => {
-      // If the clicked element is NOT the Add button, open the modal
       if (!e.target.classList.contains('add-btn')) {
         const index = parseInt(card.getAttribute('data-index'));
         openModal(index);
       }
     });
 
-    // When clicking the "Add +" button inside the card grid
     const addBtn = card.querySelector('.add-btn');
     addBtn.addEventListener('click', (e) => {
-      e.stopPropagation(); // Prevents the card click event from firing (prevents modal from opening)
-      
+      e.stopPropagation(); 
       const index = parseInt(card.getAttribute('data-index'));
       addItemToCart(index);
       
-      // Button visual feedback
       const originalText = addBtn.innerText;
       addBtn.innerText = '✓ Added';
       addBtn.classList.add('added');
